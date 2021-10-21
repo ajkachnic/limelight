@@ -1,6 +1,6 @@
 # limelight
 
-A minimal text editor, built with a small Zig core and Lua.
+A minimal text editor, built with Zig.
 
 ## Prior work
 
