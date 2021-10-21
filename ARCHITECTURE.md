@@ -32,7 +32,7 @@ A window is a container of an editor. Windows are the only thing so far that is 
 A split is a group of multiple windows, grouped in a specific manner. They define the structure of windows. In functional programming, a simplified `Split` might be represented like this:
 
 ```haskell
-type Split
+data Split
   = EditorView Editor
   | VerticalSplit Split Split
   | HorizontalSplit Split Split
