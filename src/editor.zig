@@ -2,45 +2,26 @@ const std = @import("std");
 const common = @import("./common.zig");
 const c = common.c;
 
-const buffer = @import("./buffer.zig");
-const renderer = @import("./renderer.zig");
+const renderer = @import("./render.zig");
 
 const Allocator = std.mem.Allocator;
 const ArrayList = std.ArrayList;
 const AutoHashMap = std.AutoHashMap;
-const Buffer = buffer.Buffer;
+const Buffer = common.buffer.Buffer;
 
-/// The editor itself, containing many buffers, views, etc
+pub const Vector2 = struct { x: u32 = 0, y: u32 = 0 };
+
+/// The Editor, which stores an active buffer, and acts as the interface for 
+/// interacting with it.
 pub const Editor = struct {
     alloc: *Allocator,
-    font: ?*c.TTF_Font,
+    buffer: *Buffer,
+    cursor: Vector2,
 
-    active_buffer: ?*Buffer,
-
-    pub fn init(alloc: *Allocator) Editor {
+    pub fn init(alloc: *Allocator, buffer: *Buffer) Editor {
         return Editor{
             .alloc = alloc,
-            .active_buffer = null,
-            .font = null,
+            .buffer = buffer,
         };
-    }
-
-    pub fn setActiveBuffer(self: *Editor, buf: *Buffer) void {
-        self.active_buffer = buf;
-    }
-
-    pub fn clearActiveBuffer(self: *Editor) void {
-        self.active_buffer = null;
-    }
-
-    pub fn viewActiveBuffer(self: *Editor) !bool {
-        var active = if (self.active_buffer != null) self.active_buffer.? else {
-            return false;
-        };
-
-        try renderer.color(255, 255, 255, 255);
-        try renderer.text(active.bytes.items, 10, 10, self.font.?);
-
-        return true;
     }
 };

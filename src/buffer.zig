@@ -22,6 +22,7 @@ pub const Buffer = struct {
     lang: Language,
     source: BufferSource,
     editor: *Editor,
+    id: usize = 0,
 
     pub fn fromFile(editor: *Editor, filename: []const u8) !Buffer {
         var file_descriptor = try std.fs.openFileAbsolute(filename, .{
@@ -29,8 +30,6 @@ pub const Buffer = struct {
         });
         var file_size = (try file_descriptor.stat()).size;
         var file_buffer = try ArrayList(u8).initCapacity(editor.alloc, file_size);
-
-        std.log.debug("file size: {d}", .{file_size});
 
         var reader = file_descriptor.reader();
         try reader.readAllArrayList(&file_buffer, 2048);
